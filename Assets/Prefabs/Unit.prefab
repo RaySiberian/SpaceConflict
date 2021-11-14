@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6160120696103127516}
   m_Layer: 6
   m_Name: Unit
-  m_TagString: Unit
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,8 +100,8 @@ MonoBehaviour:
   UnitFaction: 0
   Rigidbody2D: {fileID: 6160120696103127516}
   Target: {fileID: 0}
-  StartPos: {x: 0, y: 0}
-  Speed: 0.005
+  PlanetTag: 
+  BaseUnitPrefab: {fileID: 0}
 --- !u!58 &-2523282565795952547
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 809690858871163153}
   m_Layer: 7
   m_Name: EnemyUnit
-  m_TagString: EnemyUnit
+  m_TagString: RedAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,6 +100,8 @@ MonoBehaviour:
   UnitFaction: 2
   Rigidbody2D: {fileID: 809690858871163153}
   Target: {fileID: 0}
+  PlanetTag: 
+  BaseUnitPrefab: {fileID: 0}
 --- !u!58 &196684253821143184
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+
 public class Planet : MonoBehaviour
 {
     public int Population;
@@ -8,7 +9,7 @@ public class Planet : MonoBehaviour
     public int MaxPopulation;
     public BaseFaction BaseFaction;
     public BaseType BaseType;
-    
+
     public Unit UnitPrefab;
 
     [SerializeField] private TextMeshPro PopulationText;
@@ -16,7 +17,7 @@ public class Planet : MonoBehaviour
     private float needTimerTick;
     private Vector3 cachedPosition;
     private SpriteRenderer spriteRenderer;
-    
+
     private void OnEnable()
     {
         Timer.Tick += OnTimerTick;
@@ -26,7 +27,7 @@ public class Planet : MonoBehaviour
     {
         Timer.Tick -= OnTimerTick;
     }
-    
+
     private void Start()
     {
         cachedPosition = transform.position;
@@ -43,52 +44,21 @@ public class Planet : MonoBehaviour
             //StartCoroutine(SendUnits());
         }
     }
-    
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         Collision(other);
     }
-    
+
     private void OnTriggerStay2D(Collider2D other)
     {
-       Collision(other);
+        Collision(other);
     }
 
     private void Collision(Collider2D other)
     {
         if (BaseFaction == BaseFaction.None)
         {
-            if (other.gameObject.CompareTag("Unit") || other.gameObject.CompareTag("EnemyUnit"))
-            {
-                if (Population == 0)
-                {
-                    Unit unit = other.gameObject.GetComponent<Unit>();
-                    BaseFaction = unit.UnitFaction;
-                    spriteRenderer.color = unit.gameObject.gameObject.GetComponent<SpriteRenderer>().color;
-                    gameObject.tag = unit.PlanetTag;
-                    UnitPrefab = unit.BaseUnitPrefab;
-                    return;
-                }
-                Population--;
-                PopulationText.text = Population.ToString();
-            }
-            Destroy(other.gameObject);
-        }
-        else if (BaseFaction == BaseFaction.AIRed)
-        {
-            UnitCollisionCheck(other.gameObject,"EnemyUnit");
-        }
-        else if (BaseFaction == BaseFaction.Player)
-        {
-            UnitCollisionCheck(other.gameObject,"Unit");
-        }
-    }
-    
-    private void UnitCollisionCheck(GameObject other,string unitTag)
-    {
-        if (!other.gameObject.CompareTag(unitTag))
-        {
-           
             if (Population == 0)
             {
                 Unit unit = other.gameObject.GetComponent<Unit>();
@@ -97,7 +67,33 @@ public class Planet : MonoBehaviour
                 gameObject.tag = unit.PlanetTag;
                 UnitPrefab = unit.BaseUnitPrefab;
                 return;
-            } 
+            }
+
+            Population--;
+            PopulationText.text = Population.ToString();
+
+            Destroy(other.gameObject);
+        }
+        else
+        {
+            UnitCollisionCheck(other.gameObject);
+        }
+    }
+
+    private void UnitCollisionCheck(GameObject other)
+    {
+        if (!other.gameObject.CompareTag(gameObject.tag))
+        {
+            if (Population == 0)
+            {
+                Unit unit = other.gameObject.GetComponent<Unit>();
+                BaseFaction = unit.UnitFaction;
+                spriteRenderer.color = unit.gameObject.gameObject.GetComponent<SpriteRenderer>().color;
+                gameObject.tag = unit.PlanetTag;
+                UnitPrefab = unit.BaseUnitPrefab;
+                return;
+            }
+
             PopulationText.text = Population.ToString();
             Population--;
         }
@@ -106,9 +102,10 @@ public class Planet : MonoBehaviour
             Population++;
             PopulationText.text = Population.ToString();
         }
+
         Destroy(other.gameObject);
     }
-    
+
     private void OnTimerTick()
     {
         if (BaseFaction == BaseFaction.None)
@@ -128,7 +125,7 @@ public class Planet : MonoBehaviour
             tickCount = 0;
         }
     }
-    
+
     public void SendHalfUnits(Transform target)
     {
         StartCoroutine(SendUnits(target));
@@ -137,7 +134,7 @@ public class Planet : MonoBehaviour
     private IEnumerator SendUnits(Transform target)
     {
         int tempPopulation = Population;
-        for (int i = 0; i <  tempPopulation / 2; i++)
+        for (int i = 0; i < tempPopulation / 2; i++)
         {
             Vector3 test = target.position - cachedPosition;
             var unit = Instantiate(UnitPrefab, test.normalized + cachedPosition, Quaternion.identity);
@@ -149,9 +146,8 @@ public class Planet : MonoBehaviour
             PopulationText.text = Population.ToString();
             yield return new WaitForSeconds(0.3f);
         }
-  
-    } 
-    
+    }
+
     private void SetStartStats(BaseType baseType)
     {
         switch (baseType)

@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
                 chosenPlanets.Clear();
                 ClearOutLines();
             }
-            else if(hit.collider.gameObject.CompareTag("Base"))
+            else if(hit.collider.gameObject.CompareTag("Player"))
             {
                 Planet planet = hit.collider.gameObject.GetComponent<Planet>();
                 
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
                 }
                 
             }
-            else if (hit.collider.gameObject.CompareTag("EnemyBase") || hit.collider.gameObject.CompareTag("NeutralBase"))
+            else
             {
                 if (chosenPlanets.Count > 0)
                 {
