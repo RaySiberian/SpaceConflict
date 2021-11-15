@@ -9,6 +9,9 @@ TagManager:
   - EnemyBase
   - EnemyUnit
   - NeutralBase
+  - RedAI
+  - GreenAI
+  - BrownAI
   layers:
   - Default
   - TransparentFX

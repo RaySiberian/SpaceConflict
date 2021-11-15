@@ -37,14 +37,6 @@ public class Planet : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            //StartCoroutine(SendUnits());
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         Collision(other);
@@ -136,15 +128,16 @@ public class Planet : MonoBehaviour
         int tempPopulation = Population;
         for (int i = 0; i < tempPopulation / 2; i++)
         {
-            Vector3 test = target.position - cachedPosition;
-            var unit = Instantiate(UnitPrefab, test.normalized + cachedPosition, Quaternion.identity);
+            Vector3 direction = target.position - cachedPosition;
+            Vector3 rand = new Vector2(Random.Range(0.01f, 0.1f), Random.Range(0.01f, 0.1f));
+            var unit = Instantiate(UnitPrefab, direction.normalized / 1.2f + cachedPosition , Quaternion.identity);
             unit.Target = target;
             unit.UnitFaction = BaseFaction;
             unit.PlanetTag = gameObject.tag;
             unit.BaseUnitPrefab = UnitPrefab;
             Population--;
             PopulationText.text = Population.ToString();
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
