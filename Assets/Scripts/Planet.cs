@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Planet : MonoBehaviour
 {
@@ -9,8 +10,9 @@ public class Planet : MonoBehaviour
     public int MaxPopulation;
     public BaseFaction BaseFaction;
     public BaseType BaseType;
-
     public Unit UnitPrefab;
+
+    public Transform SpawnPoint;
 
     [SerializeField] private TextMeshPro PopulationText;
     private float tickCount;
@@ -30,11 +32,16 @@ public class Planet : MonoBehaviour
 
     private void Start()
     {
+        //LookAtCenter();
         cachedPosition = transform.position;
         SetStartStats(BaseType);
         needTimerTick = ReproductionSpeed / 0.10f;
         PopulationText.text = Population.ToString();
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -126,19 +133,76 @@ public class Planet : MonoBehaviour
     private IEnumerator SendUnits(Transform target)
     {
         int tempPopulation = Population;
-        for (int i = 0; i < tempPopulation / 2; i++)
+        Population = 0;
+        PopulationText.text = Population.ToString();
+        
+        SetSpawnPointPosition(target);
+        
+        //Тихий ужас
+        
+        Vector2 offset1 = SpawnPoint.TransformPoint(new Vector2(0.75f,0));
+        Vector2 offset2 = SpawnPoint.TransformPoint(new Vector2(2.25f,0));
+        Vector2 offset3 = SpawnPoint.TransformPoint(new Vector2(-0.75f,0));
+        Vector2 offset4 = SpawnPoint.TransformPoint(new Vector2(-2.25f,0));
+
+        int cyclesCount = tempPopulation / 4;
+        int remains = tempPopulation - cyclesCount * 4;
+        
+        for (int i = 0; i < cyclesCount; i += 1)
         {
-            Vector3 direction = target.position - cachedPosition;
-            Vector3 rand = new Vector2(Random.Range(0.01f, 0.1f), Random.Range(0.01f, 0.1f));
-            var unit = Instantiate(UnitPrefab, direction.normalized / 1.2f + cachedPosition , Quaternion.identity);
-            unit.Target = target;
-            unit.UnitFaction = BaseFaction;
-            unit.PlanetTag = gameObject.tag;
-            unit.BaseUnitPrefab = UnitPrefab;
-            Population--;
-            PopulationText.text = Population.ToString();
+            SpawnUnit(offset1, target);
+            SpawnUnit(offset2, target);
+            SpawnUnit(offset3, target);
+            SpawnUnit(offset4, target);
+          
             yield return new WaitForSeconds(0.1f);
         }
+        
+        if (remains > 0 && remains < 4)
+        {
+            switch (remains)
+            {
+                case 1:
+                    SpawnUnit(offset4, target);
+                    break;
+                case 2 :
+                    SpawnUnit(offset4, target);
+                    SpawnUnit(offset3, target);
+                    break;
+                case 3:
+                    SpawnUnit(offset4, target);
+                    SpawnUnit(offset3, target);
+                    SpawnUnit(offset2, target);
+                    break;
+            }
+        }
+        
+        SpawnPoint.position = transform.position;
+    }
+
+    private void SpawnUnit(Vector3 spawnPos, Transform unitTarget)
+    {
+        var unit = Instantiate(UnitPrefab, spawnPos, Quaternion.identity);
+        unit.Target = unitTarget;
+        unit.UnitFaction = BaseFaction;
+        unit.PlanetTag = gameObject.tag;
+        unit.BaseUnitPrefab = UnitPrefab;
+    }
+
+    private void SetSpawnPointPosition(Transform target)
+    {
+        LookAt(SpawnPoint, target.transform);
+        Vector2 relative = SpawnPoint.TransformDirection(Vector2.up);
+        SpawnPoint.position += (Vector3)relative;
+    }
+
+    private void LookAt(Transform self, Transform target)
+    {
+        float angle = 0;
+
+        Vector3 relative = self.InverseTransformPoint(target.position);
+        angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
+        self.Rotate(0, 0, -angle);
     }
 
     private void SetStartStats(BaseType baseType)
@@ -166,15 +230,6 @@ public class Planet : MonoBehaviour
                 MaxPopulation = 50;
                 break;
         }
-    }
-
-    private void LookAtCenter()
-    {
-        float angle = 0;
-
-        Vector3 relative = transform.InverseTransformPoint(Vector3.zero);
-        angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
-        transform.Rotate(0, 0, -angle);
     }
 }
 
