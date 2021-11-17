@@ -76,7 +76,7 @@ public class AI : MonoBehaviour
     {
         for (int i = 0; i < myPlanets.Count; i++)
         {
-            myPlanets[i].SendHalfUnits(target.transform);
+            myPlanets[i].SendAllUnits(target.transform);
         }
     }
     

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -16,45 +17,47 @@ public class Planet : MonoBehaviour
     public Data Data;
     
     [SerializeField] private TextMeshPro PopulationText;
-    private float tickCount;
-    private float needTimerTick;
 
     private SpriteRenderer spriteRenderer;
 
     private void OnEnable()
     {
-        Timer.Tick += OnTimerTick;
+        Timer.SpawnTick += OnTimerTick;
     }
 
     private void OnDisable()
     {
-        Timer.Tick -= OnTimerTick;
+        Timer.SpawnTick -= OnTimerTick;
     }
 
-    private void OnTimerTick()
+    private void OnTimerTick(TickType tickType)
     {
-        if (BaseFaction == BaseFaction.None)
-            return;
-
-        if (MaxPopulation <= Population)
+        switch (BaseFaction)
         {
-            return;
-        }
-
-        tickCount++;
-        if (tickCount >= needTimerTick)
-        {
-            Population++;
-            PopulationText.text = Population.ToString();
-            tickCount = 0;
+            case BaseFaction.None:
+                return;
+            case BaseFaction.Player:
+                if (MaxPopulation <= Population || tickType == TickType.AI)
+                {
+                    return;
+                }
+                Population++;
+                PopulationText.text = Population.ToString();
+                break;
+            default:
+                if (MaxPopulation <= Population || tickType == TickType.Player)
+                {
+                    return;
+                }
+                Population++;
+                PopulationText.text = Population.ToString();
+                break;
         }
     }
 
     private void Start()
     {
-        
         SetStartStats(BaseType);
-        needTimerTick = ReproductionSpeed / 0.02f;
         PopulationText.text = Population.ToString();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -80,12 +83,7 @@ public class Planet : MonoBehaviour
         {
             if (Population == 0)
             {
-                Unit unit = other.gameObject.GetComponent<Unit>();
-                BaseFaction = unit.UnitFaction;
-                spriteRenderer.color = unit.gameObject.gameObject.GetComponent<SpriteRenderer>().color;
-                gameObject.tag = unit.PlanetTag;
-                UnitPrefab = unit.BaseUnitPrefab;
-                UnitMoveSpeedScale = unit.MoveSpeedScale;
+                SetBaseSettingsByUnit(other);
                 return;
             }
 
@@ -96,42 +94,38 @@ public class Planet : MonoBehaviour
         }
         else
         {
-            UnitCollisionCheck(other.gameObject);
-        }
-    }
-
-    private void UnitCollisionCheck(GameObject other)
-    {
-        if (!other.gameObject.name.Equals($"To {gameObject.name}"))
-        {
-            return;
-        }
-        
-        if (!other.gameObject.CompareTag(gameObject.tag))
-        {
-            if (Population == 0)
+            if (!other.gameObject.CompareTag(gameObject.tag))
             {
-                Unit unit = other.gameObject.GetComponent<Unit>();
-                BaseFaction = unit.UnitFaction;
-                spriteRenderer.color = unit.gameObject.gameObject.GetComponent<SpriteRenderer>().color;
-                gameObject.tag = unit.PlanetTag;
-                UnitPrefab = unit.BaseUnitPrefab;
-                return;
+                if (Population == 0)
+                {
+                   SetBaseSettingsByUnit(other);
+                   return;
+                }
+
+                PopulationText.text = Population.ToString();
+                Population--;
+            }
+            else
+            {
+                Population++;
+                PopulationText.text = Population.ToString();
             }
 
-            PopulationText.text = Population.ToString();
-            Population--;
+            Destroy(other.gameObject);
         }
-        else
-        {
-            Population++;
-            PopulationText.text = Population.ToString();
-        }
+    }
 
-        Destroy(other.gameObject);
+    private void SetBaseSettingsByUnit(Collider2D other)
+    {
+        Unit unit = other.gameObject.GetComponent<Unit>();
+        BaseFaction = unit.UnitFaction;
+        spriteRenderer.color = unit.gameObject.gameObject.GetComponent<SpriteRenderer>().color;
+        gameObject.tag = unit.PlanetTag;
+        UnitPrefab = unit.BaseUnitPrefab;
+        UnitMoveSpeedScale = unit.MoveSpeedScale;
     }
     
-    public void SendHalfUnits(Transform target)
+    public void SendAllUnits(Transform target)
     {
         StartCoroutine(SendUnits(target));
     }

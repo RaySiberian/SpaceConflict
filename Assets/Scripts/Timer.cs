@@ -3,31 +3,54 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-   public static event Action Tick;
+   public static event Action<TickType> SpawnTick;
    public static event Action AITick;
+
+   public Data Data;
    
-   private float tickTime;
-   private float AItickTime;
-   private float t;
+   private float playerSpawnTime;
+   private float playerDeltaTick;
+   private float botSpawnTime;
+   private float botDeltaTick;
+
+   private float botAnalyzeTime;
+   private float botTime;
    
    private void Start()
    {
-      tickTime = Time.time;
-      AItickTime = Time.time;
+      botTime = Time.time;
+      botAnalyzeTime = Data.BotAnalyzeTime;
+      
+      playerSpawnTime = Time.time;
+      botSpawnTime = Time.time;
+      playerDeltaTick = Data.ReproductionTime;
+      botDeltaTick = Data.EnemyReproductionTime;
    }
 
    private void Update()
    {
-      if (Time.time - tickTime > 0.02)
+      if (Time.time - playerSpawnTime > playerDeltaTick)
       {
-         Tick?.Invoke();
-         tickTime = Time.time;
+         SpawnTick?.Invoke(TickType.Player);
+         playerSpawnTime = Time.time;
       }
-
-      if (Time.time - AItickTime > 3)
+      
+      if (Time.time - botSpawnTime > botDeltaTick)
+      {
+         SpawnTick?.Invoke(TickType.AI);
+         botSpawnTime = Time.time;
+      }
+      
+      if (Time.time - botTime > botAnalyzeTime)
       {
          AITick?.Invoke();
-         AItickTime = Time.time;
+         botTime = Time.time;
       }
    }
+}
+
+public enum TickType
+{
+   Player = 0,
+   AI = 1
 }

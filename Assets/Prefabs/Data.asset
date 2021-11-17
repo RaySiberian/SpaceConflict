@@ -16,3 +16,4 @@ MonoBehaviour:
   ReproductionTime: 1.6
   EnemyMoveSpeedScale: 1
   EnemyReproductionTime: 1.6
+  BotAnalyzeTime: 3

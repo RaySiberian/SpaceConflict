@@ -7,4 +7,5 @@ public class Data : ScriptableObject
     public float ReproductionTime;
     public float EnemyMoveSpeedScale;
     public float EnemyReproductionTime;
+    public float BotAnalyzeTime;
 }

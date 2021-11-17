@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
                     chosenPlanets.Remove(planet);
                     foreach (var chosenPlanet in chosenPlanets)
                     {
-                        chosenPlanet.SendHalfUnits(planet.transform);
+                        chosenPlanet.SendAllUnits(planet.transform);
                     }
                     chosenPlanets.Clear();
                     ClearOutLines();
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
                 {
                     foreach (var planet in chosenPlanets)
                     {
-                        planet.SendHalfUnits(hit.transform);
+                        planet.SendAllUnits(hit.transform);
                     }
                     chosenPlanets.Clear();
                     ClearOutLines();
