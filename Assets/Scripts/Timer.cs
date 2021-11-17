@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
    
    private float tickTime;
    private float AItickTime;
+   private float t;
    
    private void Start()
    {
@@ -17,7 +18,7 @@ public class Timer : MonoBehaviour
 
    private void Update()
    {
-      if (Time.time - tickTime > 0.1)
+      if (Time.time - tickTime > 0.02)
       {
          Tick?.Invoke();
          tickTime = Time.time;

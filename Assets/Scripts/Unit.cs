@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour
     public Transform Target;
     public string PlanetTag;
     public Unit BaseUnitPrefab;
+    public float MoveSpeedScale;
     
     private Vector3 direction;
     
@@ -14,7 +15,7 @@ public class Unit : MonoBehaviour
     {
         LookAtTarget();
         direction = Target.transform.position - transform.position;
-        Rigidbody2D.velocity = direction.normalized;
+        Rigidbody2D.velocity = direction.normalized * MoveSpeedScale;
     }
 
     private void LookAtTarget()

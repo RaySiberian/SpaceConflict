@@ -30,6 +30,7 @@ public class AI : MonoBehaviour
         neutralPlanets = new List<Planet>();
         enemyPlanets = new List<Planet>();
         allPlanets = FindObjectsOfType<Planet>();
+        
         foreach (var planet in allPlanets)
         {
             if (planet.BaseFaction == BaseFaction.None)
@@ -52,7 +53,7 @@ public class AI : MonoBehaviour
         AnalyzePlanetsFaction();
         tempNeutralPlanet = CheckForNeutralPlanets();
         myTotalPopulation = CalculateTotalPopulation();
-        if (tempNeutralPlanet != null && tempNeutralPlanet.Population < myTotalPopulation / 2)
+        if (tempNeutralPlanet != null && tempNeutralPlanet.Population < myTotalPopulation)
         {
             SendUnitsFromBases(tempNeutralPlanet);
         }
@@ -63,7 +64,7 @@ public class AI : MonoBehaviour
         else if (tempNeutralPlanet == null)
         {
             tempEnemyPlanet = FindLowerPopulationEnemyBase();
-            if (tempEnemyPlanet.Population + 5 < myTotalPopulation / 2)
+            if (tempEnemyPlanet.Population + 5 < myTotalPopulation)
             {
                 SendUnitsFromBases(tempEnemyPlanet);
             }
