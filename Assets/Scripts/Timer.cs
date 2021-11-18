@@ -6,8 +6,6 @@ public class Timer : MonoBehaviour
    public static event Action<TickType> SpawnTick;
    public static event Action AITick;
 
-   public Data Data;
-   
    private float playerSpawnTime;
    private float playerDeltaTick;
    private float botSpawnTime;
@@ -19,12 +17,12 @@ public class Timer : MonoBehaviour
    private void Start()
    {
       botTime = Time.time;
-      botAnalyzeTime = Data.BotAnalyzeTime;
+      botAnalyzeTime = Data.Instance.BotAnalyzeTime;
       
       playerSpawnTime = Time.time;
       botSpawnTime = Time.time;
-      playerDeltaTick = Data.ReproductionTime;
-      botDeltaTick = Data.EnemyReproductionTime;
+      playerDeltaTick = Data.Instance.ReproductionTime;
+      botDeltaTick = Data.Instance.EnemyReproductionTime;
    }
 
    private void Update()

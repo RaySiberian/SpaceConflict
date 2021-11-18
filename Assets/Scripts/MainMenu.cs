@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public Data Data;
     public GameObject UpgradesPanel;
 
     public Text ReproductionCurrentLvl;
@@ -24,7 +23,7 @@ public class MainMenu : MonoBehaviour
     public void OpenUpgradePanel()
     {
         UpgradesPanel.SetActive(true);
-        ReproductionCurrentLvl.text = Data.ReproductionLvl.ToString();
+        ReproductionCurrentLvl.text = Data.Instance.ReproductionLvl.ToString();
         //UnitSpeedCurrentLvl.text = Data.MoveSpeedLvl.ToString();
     }
     
@@ -37,9 +36,9 @@ public class MainMenu : MonoBehaviour
     {
         if (id.Equals("Rep"))
         {
-            Data.ReproductionTime -= 0.02f;
-            Data.ReproductionLvl += 1;
-            ReproductionCurrentLvl.text = Data.ReproductionLvl.ToString();
+            Data.Instance.ReproductionTime -= 0.02f;
+            Data.Instance.ReproductionLvl += 1;
+            ReproductionCurrentLvl.text = Data.Instance.ReproductionLvl.ToString();
         }
     }
 }

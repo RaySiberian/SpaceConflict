@@ -1,8 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerBuffs", menuName = "ScriptableObjects/Buff", order = 1)]
-public class Data : ScriptableObject
+public class Data : MonoBehaviour
 {
+    public static Data Instance { get; private set; }
+
     public float MoveSpeedScale;
     public float ReproductionTime;
 
@@ -21,7 +22,7 @@ public class Data : ScriptableObject
     {
         SaveSystem.SaveCurrentData(this);
     }
-
+    
     public void Load()
     {
         SavedData savedData = SaveSystem.LoadData();
@@ -36,4 +37,17 @@ public class Data : ScriptableObject
         MoveSpeedLvl = savedData.MoveSpeedLvl;
     }
     
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+    }
 }

@@ -14,8 +14,7 @@ public class Planet : MonoBehaviour
     public Unit UnitPrefab;
 
     public Transform SpawnPoint;
-    public Data Data;
-    
+
     [SerializeField] private TextMeshPro PopulationText;
 
     private SpriteRenderer spriteRenderer;
@@ -239,13 +238,13 @@ public class Planet : MonoBehaviour
         }
         else if (BaseFaction == BaseFaction.Player)
         {
-            UnitMoveSpeedScale = Data.MoveSpeedScale;
-            ReproductionSpeed = Data.ReproductionTime;
+            UnitMoveSpeedScale = Data.Instance.MoveSpeedScale;
+            ReproductionSpeed = Data.Instance.ReproductionTime;
         }
         else
         {
-            UnitMoveSpeedScale = Data.EnemyMoveSpeedScale;
-            ReproductionSpeed = Data.EnemyReproductionTime;
+            UnitMoveSpeedScale = Data.Instance.EnemyMoveSpeedScale;
+            ReproductionSpeed = Data.Instance.EnemyReproductionTime;
         }
     }
 }

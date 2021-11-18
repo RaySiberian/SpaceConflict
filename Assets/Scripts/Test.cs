@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public Data Data;
+ 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            Data.Save();
+            Data.Instance.Save();
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            Data.Load();
+            Data.Instance.Load();
         }
     }
 }
