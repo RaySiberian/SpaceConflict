@@ -851,7 +851,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f58a881ce60f994298534e28576281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: e8ed449504e76124e9c326f55e225663, type: 2}
 --- !u!4 &435912814
 Transform:
   m_ObjectHideFlags: 0
@@ -1319,7 +1318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f783e5c6c7aab42911e5027e5d1bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: e8ed449504e76124e9c326f55e225663, type: 2}
   UpgradesPanel: {fileID: 954012995}
   ReproductionCurrentLvl: {fileID: 389821875}
   UnitSpeedCurrentLvl: {fileID: 0}
@@ -2224,7 +2222,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580892315}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75154245, y: -0.4029603, z: 43.398438}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2251,6 +2249,9 @@ MonoBehaviour:
   Upgrades: ---Upgrades---
   ReproductionLvl: 0
   MoveSpeedLvl: 0
+  Levels: ---Levels---
+  MaxSceneId: 1
+  Coins: 0
 --- !u!1 &1976646600
 GameObject:
   m_ObjectHideFlags: 0

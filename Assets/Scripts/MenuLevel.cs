@@ -1,16 +1,21 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuLevel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Button[] LevelButtons;
+
+    private void Start()
     {
-        
+        for (int i = 0; i < Data.Instance.MaxSceneId; i++)
+        {
+            LevelButtons[i].interactable = true;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LoadLevel(int id)
     {
-        
+        SceneManager.LoadScene(id);
     }
 }

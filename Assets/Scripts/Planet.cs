@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Planet : MonoBehaviour
 {
+    public static event Action PlanetSateChanged;
+    
     public int Population;
     public float ReproductionSpeed;
     public int MaxPopulation;
@@ -100,9 +102,9 @@ public class Planet : MonoBehaviour
                    SetBaseSettingsByUnit(other);
                    return;
                 }
-
-                PopulationText.text = Population.ToString();
+                
                 Population--;
+                PopulationText.text = Population.ToString();
             }
             else
             {
@@ -122,6 +124,7 @@ public class Planet : MonoBehaviour
         gameObject.tag = unit.PlanetTag;
         UnitPrefab = unit.BaseUnitPrefab;
         UnitMoveSpeedScale = unit.MoveSpeedScale;
+        PlanetSateChanged?.Invoke();
     }
     
     public void SendAllUnits(Transform target)

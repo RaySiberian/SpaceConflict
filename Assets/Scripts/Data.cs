@@ -18,6 +18,10 @@ public class Data : MonoBehaviour
     public int ReproductionLvl;
     public int MoveSpeedLvl;
 
+
+    public string Levels = "---Levels---";
+    public int MaxSceneId;
+    public int Coins;
     public void Save()
     {
         SaveSystem.SaveCurrentData(this);
