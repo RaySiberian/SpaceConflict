@@ -66,5 +66,6 @@ public class LevelManager : MonoBehaviour
         {
             Data.Instance.MaxSceneId = SceneIndex;
         }
+
     }
 }
